@@ -67,6 +67,10 @@ const Homescreen = (props) => {
 		return retVal;
 	}
 
+	const tpsClear = async () =>{
+		props.tps.clearAllTransactions();
+	}
+
 
 	// Creates a default item and passes it to the backend resolver.
 	// The return id is assigned to the item, and the item is appended
@@ -139,12 +143,14 @@ const Homescreen = (props) => {
 		}
 		const { data } = await AddTodolist({ variables: { todolist: list }, refetchQueries: [{ query: GET_DB_TODOS }] });
 		setActiveList(list)
+		tpsClear();
 	};
 
 	const deleteList = async (_id) => {
 		DeleteTodolist({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_TODOS }] });
 		refetch();
 		setActiveList({});
+		tpsClear();
 	};
 
 	const updateListField = async (_id, field, value, prev) => {
@@ -159,7 +165,13 @@ const Homescreen = (props) => {
 		setActiveList(todo);
 	};
 
-	
+	const handleCloseList = async () =>{
+		console.log("here");
+		setActiveList({});
+		tpsClear();
+	}	
+
+
 	/*
 		Since we only have 3 modals, this sort of hardcoding isnt an issue, if there
 		were more it would probably make sense to make a general modal component, and
@@ -225,7 +237,7 @@ const Homescreen = (props) => {
 									addItem={addItem} deleteItem={deleteItem}
 									editItem={editItem} reorderItem={reorderItem}
 									setShowDelete={setShowDelete}
-									activeList={activeList} setActiveList={setActiveList}
+									activeList={activeList} setActiveList={handleCloseList}
 								/>
 							</div>
 						:
