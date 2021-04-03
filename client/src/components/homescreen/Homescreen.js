@@ -162,9 +162,6 @@ const Homescreen = (props) => {
 	const handleSetActive = (id) => {
 		const todo = todolists.find(todo => todo.id === id || todo._id === id);
 		setActiveList(todo);
-		todolists = todolists.filter(list => list != todo);
-		todolists = todolists.unshift(todo);
-		
 	};
 
 	const handleCloseList = async () =>{
