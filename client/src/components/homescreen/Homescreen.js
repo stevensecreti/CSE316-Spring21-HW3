@@ -50,7 +50,6 @@ const Homescreen = (props) => {
 				let tempID = activeList._id;
 				let list = todolists.find(list => list._id === tempID);
 				setActiveList(list);
-
 			}
 		}
 	}
@@ -163,10 +162,12 @@ const Homescreen = (props) => {
 	const handleSetActive = (id) => {
 		const todo = todolists.find(todo => todo.id === id || todo._id === id);
 		setActiveList(todo);
+		todolists = todolists.filter(list => list != todo);
+		todolists = todolists.unshift(todo);
+		
 	};
 
 	const handleCloseList = async () =>{
-		console.log("here");
 		setActiveList({});
 		tpsClear();
 	}	
@@ -221,7 +222,7 @@ const Homescreen = (props) => {
 							<SidebarContents
 								todolists={todolists} activeid={activeList.id} auth={auth}
 								handleSetActive={handleSetActive} createNewList={createNewList}
-								updateListField={updateListField}
+								updateListField={updateListField} activeList = {activeList} activeName = {activeList.name}
 							/>
 							:
 							<></>
