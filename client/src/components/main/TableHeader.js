@@ -33,6 +33,14 @@ const TableHeader = (props) => {
                         <i className="material-icons">close</i>
                     </WButton>
                 </div>
+                <div className="button-group">
+                    <WButton className="sidebar-buttons undo-redo" onClick={props.undo} wType="texted" clickAnimation="ripple-light" shape="rounded">
+                        <i className="material-icons">undo</i>
+                    </WButton>
+                    <WButton className="sidebar-buttons undo-redo" onClick={props.redo} wType="texted" clickAnimation="ripple-light" shape="rounded">
+                        <i className="material-icons">redo</i>
+                    </WButton>
+                </div>
             </WCol>
 
         </WRow>
