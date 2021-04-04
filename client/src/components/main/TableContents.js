@@ -14,6 +14,7 @@ const TableContents = (props) => {
                         editItem={props.editItem} 
                         top={index == 0 ? true : false}
                         bottom={entry == entries[entries.length - 1] ? true : false}
+                        index={index}
                     />
                 ))
             }

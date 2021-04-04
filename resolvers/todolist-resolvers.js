@@ -36,14 +36,15 @@ module.exports = {
 			@returns {string} the objectID of the item or an error message
 		**/
 		addItem: async(_, args) => {
-			const { _id, item } = args;
+			const { _id, item, index } = args;
 			const listId = new ObjectId(_id);
 			const objectId = new ObjectId();
 			const found = await Todolist.findOne({_id: listId});
 			if(!found) return ('Todolist not found');
 			if(item._id === '') item._id = objectId;
 			let listItems = found.items;
-			listItems.push(item);
+			if(index < 0) listItems.push(item);
+   			else listItems.splice(index, 0, item);
 			
 			const updated = await Todolist.updateOne({_id: listId}, { items: listItems });
 
@@ -163,6 +164,131 @@ module.exports = {
 			listItems = found.items;
 			return (found.items);
 
+		},
+		sortItems: async (_, args) => {
+			const {_id, column} = args;
+			const listId = new ObjectId(_id);
+			const found = await Todolist.findOne({_id: listId});
+			let listItems = found.items;
+			let length = listItems.length;
+			if(column == 1){
+				let count = 0;
+				for(let i = 0; i < length; i++){
+					for(let j = 0; j < length-1; j++){
+						let description1 = listItems[j].description;
+						let description2 = listItems[j+1].description;
+						if(description1.localeCompare(description2) >= 0){
+							let temp = listItems[j];
+							listItems[j] = listItems[j + 1];
+							listItems[j+1] = temp;
+							count = count + 1;
+						}
+					}
+				}
+				if(count == 0){
+					for(let i = 0; i < length; i++){
+						for(let j = 0; j < length-1; j++){
+							let description1 = listItems[j].description;
+							let description2 = listItems[j+1].description;
+							if(description1.localeCompare(description2) < 0){
+								let temp = listItems[j];
+								listItems[j] = listItems[j + 1];
+								listItems[j+1] = temp;
+							}
+						}
+					}
+				}
+			}
+			else if(column == 2){
+				let count = 0;
+				for(let i = 0; i < length; i++){
+					for(let j = 0; j < length-1; j++){
+						let date1 = listItems[j].due_date;
+						let date2 = listItems[j+1].due_date;
+						if(date1.localeCompare(date2) >= 0){
+							let temp = listItems[j];
+							listItems[j] = listItems[j + 1];
+							listItems[j+1] = temp;
+							count = count + 1;
+						}
+					}
+				}
+				if(count == 0){
+					for(let i = 0; i < length; i++){
+						for(let j = 0; j < length-1; j++){
+							let date1 = listItems[j].due_date;
+							let date2 = listItems[j+1].due_date;
+							if(date1.localeCompare(date2) < 0){
+								let temp = listItems[j];
+								listItems[j] = listItems[j + 1];
+								listItems[j+1] = temp;
+							}
+						}
+					}
+				}
+			}
+			else if(column == 3){
+				let count = 0;
+				for(let i = 0; i < length; i++){
+					for(let j = 0; j < length-1; j++){
+						let status1 = listItems[j].completed;
+						let status2 = listItems[j+1].completed;
+						if(status1 == true && status2 == false){
+							let temp = listItems[j];
+							listItems[j] = listItems[j + 1];
+							listItems[j+1] = temp;
+							count = count + 1;
+						}
+					}
+				}
+				if(count == 0){
+					for(let i = 0; i < length; i++){
+						for(let j = 0; j < length-1; j++){
+							let status1 = listItems[j].completed;
+							let status2 = listItems[j+1].completed;
+							if(status1 == false && status2 == true){
+								let temp = listItems[j];
+								listItems[j] = listItems[j + 1];
+								listItems[j+1] = temp;
+							}
+						}
+					}
+				}
+			}
+			else if(column == 4){
+				let count = 0;
+				for(let i = 0; i < length; i++){
+					for(let j = 0; j < length-1; j++){
+						let assigned1 = listItems[j].assigned_to;
+						let assigned2 = listItems[j+1].assigned_to;
+						if(assigned1.localeCompare(assigned2) > 0){
+							let temp = listItems[j];
+							listItems[j] = listItems[j + 1];
+							listItems[j+1] = temp;
+							count = count + 1;
+						}
+					}
+				}
+				if(count == 0){
+					for(let i = 0; i < length; i++){
+						for(let j = 0; j < length-1; j++){
+							let assigned1 = listItems[j].assigned_to;
+							let assigned2 = listItems[j+1].assigned_to;
+							if(assigned1.localeCompare(assigned2) <= 0){
+								let temp = listItems[j];
+								listItems[j] = listItems[j + 1];
+								listItems[j+1] = temp;
+							}
+						}
+					}
+				}
+			}
+			else if(column == 5){
+				
+			}
+			const updated = await Todolist.updateOne({_id: listId}, { items: listItems });
+			if(updated) return true;
+			else return false;
 		}
 
 	}

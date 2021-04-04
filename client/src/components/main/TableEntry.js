@@ -125,7 +125,7 @@ const TableEntry = (props) => {
                         :
                         <div/>
                     }
-                    <WButton className="table-entry-buttons" onClick={() => props.deleteItem(data)} wType="texted">
+                    <WButton className="table-entry-buttons" onClick={() => props.deleteItem(data, props.index)} wType="texted">
                         <i className="material-icons">close</i>
                     </WButton>
                 </div>

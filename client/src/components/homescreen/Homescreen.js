@@ -14,7 +14,8 @@ import { WLayout, WLHeader, WLMain, WLSide } from 'wt-frontend';
 import { UpdateListField_Transaction, 
 	UpdateListItems_Transaction, 
 	ReorderItems_Transaction, 
-	EditItem_Transaction } 				from '../../utils/jsTPS';
+	EditItem_Transaction,
+	SortItems_Transaction} 				from '../../utils/jsTPS';
 import WInput from 'wt-frontend/build/components/winput/WInput';
 
 
@@ -33,6 +34,7 @@ const Homescreen = (props) => {
 	const [DeleteTodoItem] 			= useMutation(mutations.DELETE_ITEM);
 	const [AddTodolist] 			= useMutation(mutations.ADD_TODOLIST);
 	const [AddTodoItem] 			= useMutation(mutations.ADD_ITEM);
+	const [SortList]				= useMutation(mutations.SORT_ITEMS);
 
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_TODOS);
@@ -95,7 +97,7 @@ const Homescreen = (props) => {
 	};
 
 
-	const deleteItem = async (item) => {
+	const deleteItem = async (item, index) => {
 		let listID = activeList._id;
 		let itemID = item._id;
 		let opcode = 0;
@@ -107,7 +109,7 @@ const Homescreen = (props) => {
 			assigned_to: item.assigned_to,
 			completed: item.completed
 		}
-		let transaction = new UpdateListItems_Transaction(listID, itemID, itemToDelete, opcode, AddTodoItem, DeleteTodoItem);
+		let transaction = new UpdateListItems_Transaction(listID, itemID, itemToDelete, opcode, AddTodoItem, DeleteTodoItem, index);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 	};
@@ -129,6 +131,13 @@ const Homescreen = (props) => {
 		tpsRedo();
 
 	};
+
+	const sortItems = async (col) => {
+		let listToSort = activeList._id;
+		let transaction = new SortItems_Transaction(listToSort, col, SortList);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+	}
 
 	const createNewList = async () => {
 		const length = todolists.length
@@ -238,6 +247,7 @@ const Homescreen = (props) => {
 									activeList={activeList} setActiveList={handleCloseList}
 									hasUndo={props.tps.hasTransactionToUndo()}
 									hasRedo={props.tps.hasTransactionToRedo()}
+									sort = {sortItems}
 								/>
 							</div>
 						:
