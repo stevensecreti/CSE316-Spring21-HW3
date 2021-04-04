@@ -236,6 +236,8 @@ const Homescreen = (props) => {
 									editItem={editItem} reorderItem={reorderItem}
 									setShowDelete={setShowDelete}
 									activeList={activeList} setActiveList={handleCloseList}
+									hasUndo={props.tps.hasTransactionToUndo()}
+									hasRedo={props.tps.hasTransactionToRedo()}
 								/>
 							</div>
 						:

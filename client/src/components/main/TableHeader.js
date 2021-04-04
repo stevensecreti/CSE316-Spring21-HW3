@@ -5,6 +5,8 @@ import { WButton, WRow, WCol } from 'wt-frontend';
 const TableHeader = (props) => {
 
     const buttonStyle = props.disabled ? ' table-header-button-disabled ' : 'table-header-button ';
+    const undoStyle = !props.hasUndo ? ' table-header-button-disabled ' : 'siderbar-buttons undo-redo';
+    const redoStyle = !props.hasRedo ? ' table-header-button-disabled ' : 'siderbar-buttons undo-redo';
     const clickDisabled = () => { };
 
     return (
@@ -34,10 +36,10 @@ const TableHeader = (props) => {
                     </WButton>
                 </div>
                 <div className="button-group">
-                    <WButton className="sidebar-buttons undo-redo" onClick={props.undo} wType="texted" clickAnimation="ripple-light" shape="rounded">
+                    <WButton className={`${undoStyle}`} onClick={props.undo} wType="texted" clickAnimation="ripple-light" shape="rounded">
                         <i className="material-icons">undo</i>
                     </WButton>
-                    <WButton className="sidebar-buttons undo-redo" onClick={props.redo} wType="texted" clickAnimation="ripple-light" shape="rounded">
+                    <WButton className={`${redoStyle}`} onClick={props.redo} wType="texted" clickAnimation="ripple-light" shape="rounded">
                         <i className="material-icons">redo</i>
                     </WButton>
                 </div>
