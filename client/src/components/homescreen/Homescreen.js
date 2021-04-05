@@ -17,6 +17,7 @@ import { UpdateListField_Transaction,
 	EditItem_Transaction,
 	SortItems_Transaction} 				from '../../utils/jsTPS';
 import WInput from 'wt-frontend/build/components/winput/WInput';
+import { isObjectType } from 'graphql';
 
 
 const Homescreen = (props) => {
@@ -134,7 +135,9 @@ const Homescreen = (props) => {
 
 	const sortItems = async (col) => {
 		let listToSort = activeList._id;
-		let transaction = new SortItems_Transaction(listToSort, col, SortList);
+		let itemIds = activeList.items.map(item => item.id);
+		console.log(itemIds);
+		let transaction = new SortItems_Transaction(listToSort, col, itemIds, SortList);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 	}

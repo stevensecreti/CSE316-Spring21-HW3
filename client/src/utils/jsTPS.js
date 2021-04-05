@@ -24,19 +24,18 @@ export class UpdateListField_Transaction extends jsTPS_Transaction {
 }
 
 export class SortItems_Transaction extends jsTPS_Transaction{
-    constructor(list, column, callback){
+    constructor(list, column, items, callback){
         super();
         this.list = list;
         this.column = column;
         this.updateFunction = callback;
+        this.items = items;
     }
     async doTransaction(){
-        console.log("HereTPS")
-        const { data } = await this.updateFunction({ variables: { _id: this.list, column: this.column }});
-        return data;
+        const { data } = await this.updateFunction({ variables: { _id: this.list, column: this.column, items: this.items }});
     }
     async undoTransaction(){
-
+        const { data } = await this.updateFunction({ variables: { _id: this.list, column: 5, items: this.items}});
     }
 }
 

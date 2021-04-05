@@ -143,6 +143,7 @@ module.exports = {
 			const listId = new ObjectId(_id);
 			const found = await Todolist.findOne({_id: listId});
 			let listItems = found.items;
+			let beforeSort = listItems;
 			const index = listItems.findIndex(item => item._id.toString() === itemId);
 			// move selected item visually down the list
 			if(direction === 1 && index < listItems.length - 1) {
@@ -166,11 +167,12 @@ module.exports = {
 
 		},
 		sortItems: async (_, args) => {
-			const {_id, column} = args;
+			const {_id, column, items} = args;
 			const listId = new ObjectId(_id);
 			const found = await Todolist.findOne({_id: listId});
 			let listItems = found.items;
 			let length = listItems.length;
+			console.log(items);
 			if(column == 1){
 				let count = 0;
 				for(let i = 0; i < length; i++){
@@ -284,11 +286,19 @@ module.exports = {
 				}
 			}
 			else if(column == 5){
-				
+				let revertBackList = [];
+				for(let i = 0; i < items.length; i++){
+					for(let j = 0; j < listItems.length; j++){
+						if(items[i] === listItems[j].id){
+							revertBackList.push(listItems[j]);
+						}
+					}
+				}
+				const updated = await Todolist.updateOne({_id: listId}, { items: revertBackList });
+				return true;
 			}
 			const updated = await Todolist.updateOne({_id: listId}, { items: listItems });
-			if(updated) return true;
-			else return false;
+			return true;
 		}
 
 	}
