@@ -5,8 +5,8 @@ import { WButton, WRow, WCol } from 'wt-frontend';
 const TableHeader = (props) => {
 
     const buttonStyle = props.disabled ? ' table-header-button-disabled ' : 'table-header-button ';
-    const undoStyle = !props.hasUndo ? ' table-header-button-disabled ' : 'siderbar-buttons undo-redo';
-    const redoStyle = !props.hasRedo ? ' table-header-button-disabled ' : 'siderbar-buttons undo-redo';
+    const undoStyle = !props.hasUndo ? ' table-header-button-disabled-UR ' : 'siderbar-buttons undo-redo';
+    const redoStyle = !props.hasRedo ? ' table-header-button-disabled-UR ' : 'siderbar-buttons undo-redo';
     const clickDisabled = () => { };
 
     return (

@@ -174,6 +174,7 @@ const Homescreen = (props) => {
 	const handleSetActive = (id) => {
 		const todo = todolists.find(todo => todo.id === id || todo._id === id);
 		setActiveList(todo);
+		tpsClear();
 	};
 
 	const handleCloseList = async () =>{

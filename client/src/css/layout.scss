@@ -98,6 +98,13 @@ html {
     cursor: default;
 }
 
+.table-header-button-disabled-UR{
+    padding: 0;
+    margin-left: 18px;
+    margin-right: 18px;    
+    cursor: default;
+}
+
 .table-header-buttons {
     float: right;
     height: 100%;
@@ -123,10 +130,11 @@ html {
     //padding: 12px 0;
 }
 
-.button-group {
+.button-group{
     height: 100%;
     display: flex;
     align-items: center;
+    float: left;
 }
 
 .undo-redo{
