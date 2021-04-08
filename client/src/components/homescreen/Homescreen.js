@@ -73,6 +73,22 @@ const Homescreen = (props) => {
 		props.tps.clearAllTransactions();
 	}
 
+	useEffect(() => {
+		document.addEventListener("keydown", keyCheck, false);
+		return () => {
+			document.removeEventListener("keydown", keyCheck, false);
+		}
+	});
+	
+	const keyCheck = async (event) => {
+		if(event.key === "z" && event.ctrlKey){
+		  tpsUndo();
+		}
+		if(event.key === "y" && event.ctrlKey){
+		  tpsRedo();
+		}
+	}
+
 
 	// Creates a default item and passes it to the backend resolver.
 	// The return id is assigned to the item, and the item is appended

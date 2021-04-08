@@ -3,7 +3,7 @@ import React        from 'react';
 import SidebarEntry from './SidebarEntry';
 
 const SidebarList = (props) => {
-
+    let restOfLists = props.todolists.filter(item => item.id !== props.activeid);
     return (
         <>
             {   
@@ -16,7 +16,7 @@ const SidebarList = (props) => {
             }
             {
                 props.todolists &&
-                props.todolists.filter(item => item.id !== props.activeid).map(todo => (
+                restOfLists.map(todo => (
                     <SidebarEntry
                         handleSetActive={props.handleSetActive} activeid={props.activeid}
                         id={todo.id} key={todo.id} name={todo.name} _id={todo._id}
